@@ -2,11 +2,7 @@
 session_start();
 require "../dbconnect.php";
 require "../controllers/sessions_controller.php";
-
-
-$session_controller = new Sessions_controller($db, $_SESSION);
-$current_user = $session_controller -> check_sign_in();
-
+require '../helpers/first_actions.php';
 ?>
 
 
@@ -23,7 +19,7 @@ $current_user = $session_controller -> check_sign_in();
 </head>
 
 <body>
-    <?php require 'header.php';?>
+    <?php require 'header.php'?>
 	<div id="wrap">
 		<div id="head">
 			<h1>会員登録</h1>
