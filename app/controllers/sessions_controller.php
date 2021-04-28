@@ -8,11 +8,18 @@ class Sessions_controller
     $this->session = $current_session;
   }
 
+  // ログイン中のユーザーを返すメソッド
   public function search_user()
   {
-    $users = $this->db->prepare('select * from users where id=?');
-    $users->execute(array($this->session['id']));
-    $current_user = $users->fetch();
+    if ($_SESSION['id']) {
+      $users = $this->db->prepare('select * from users where id=?');
+      $users->execute(array($this->session['id']));
+      $current_user = $users->fetch();
+      return $current_user;
+    } else {
+      $current_user = null;
+    }
+
     return $current_user;
   }
 
@@ -23,8 +30,6 @@ class Sessions_controller
     // 現在のセッションをDBで検索かける、elseならサインインページへ
     if (isset($this->session['id']) && $this->session['time'] + 3600 > time()) {
       $_SESSION['time'] = time();
-      $current_user = $this->search_user();
-      return $current_user;
     } else {
       header('Location: sign_in.php');
       exit();
@@ -71,7 +76,8 @@ class Sessions_controller
   }
 
   // ログアウトボタンが押されたときのメソッド
-  public function click_sign_out_button() {
+  public function click_sign_out_button()
+  {
     $_SESSION = array();
     if (ini_get('session.use_cookies')) {
       $params = session_get_cookie_params();

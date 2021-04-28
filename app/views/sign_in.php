@@ -1,9 +1,5 @@
 <?php
-  session_start();
-  require '../controllers/sessions_controller.php';
-  require '../dbconnect.php';
-  $session_controller = new Sessions_controller($db, $_SESSION);
-  $session_controller->check_sign_out();
+  require '../helpers/first_actions.php';
   
   //formが送信されたあと＝ボタンが押された時の処理
   if (!empty($_POST) && $_POST['button'] ==='test_login'){
