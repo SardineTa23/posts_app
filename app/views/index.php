@@ -1,5 +1,6 @@
-<?php 
+<?php
 require '../helpers/first_actions.php';
+var_dump($_SESSION);
 $session_controller->check_sign_in();
 ?>
 
@@ -17,8 +18,8 @@ $session_controller->check_sign_in();
 </head>
 
 <body>
-    <?php require 'header.php'?>
-	<?php var_dump($current_user)?>
+	<?php require 'header.php' ?>
+	<?php var_dump($current_user) ?>
 </body>
 
 </html>

@@ -1,4 +1,5 @@
 <?php
+
 class Sessions_controller
 {
   // コンストラクタで、接続したPDOインスタンスと現在のセッション情報を受け取る
@@ -47,7 +48,7 @@ class Sessions_controller
   }
 
   // ログイン関係のボタンが押されたときのメソッド
-  public function click_sign_in_button(String $email, String $password)
+  public function click_sign_in_button(string $email, string $password)
   {
     if ($email !== "" && $password !== "") {
       $login = $this->db->prepare('SELECT * FROM users WHERE email=? AND password=?');
@@ -62,7 +63,6 @@ class Sessions_controller
         if ($_POST['save'] === 'on') {
           setcookie('email', $email, time() + 60 * 60 * 24 * 14);
         }
-
         header('Location: index.php');
         exit();
         // 該当するユーザーがない時
@@ -94,5 +94,33 @@ class Sessions_controller
     setcookie('email', '', time() - 3600);
     header('Location: sign_in.php');
     exit();
+  }
+
+
+  public function do_sign_up($db, $error)
+  {
+    if (!empty($_POST)) {
+      $email = $_POST['email'];
+      $password = sha1($_POST['password']);
+      $name = $_POST['name'];
+      if (empty($error)) {
+        // $image = date('YmdHis') . $_FILES['image']['name'];
+        // move_uploaded_file($_FILES['image']['tmp_name'], '../member_picture/' . $image);
+        // $_SESSION['join']['image'] = $image;
+        $statement = $db->prepare('INSERT INTO users SET name=?, email=?, password=?, profile_image=""');
+
+        $statement->execute(array(
+          $name,
+          $email,
+          $password,
+          // $_SESSION['image']
+        ));
+
+        // 使い終わったsessionの削除
+        // unset($_SESSION);
+        $_SESSION['message'] = '会員登録が完了しました';
+        $this->click_sign_in_button($email, $password);
+      }
+    }
   }
 }

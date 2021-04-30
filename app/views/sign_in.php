@@ -1,12 +1,12 @@
 <?php
-  require '../helpers/first_actions.php';
-  
-  //formが送信されたあと＝ボタンが押された時の処理
-  if (!empty($_POST) && $_POST['button'] ==='test_login'){
+require '../helpers/first_actions.php';
+
+//formが送信されたあと＝ボタンが押された時の処理
+if (!empty($_POST) && $_POST['button'] === 'test_login') {
     $session_controller->click_sign_in_button('a@a.com', sha1('000000'));
-  } elseif (!empty($_POST)) { 
+} elseif (!empty($_POST)) {
     $session_controller->click_sign_in_button($_POST['email'], sha1($_POST['password']));
-  }
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -30,13 +30,13 @@
                 <p>&raquo;<a href="sign_up.php">入会手続きをする</a></p>
             </div>
             <div>
-              <form method='post'><button name='button' value='test_login'>testlogin</button></form>
+                <form method='post'><button name='button' value='test_login'>testlogin</button></form>
             </div>
             <form action="" method="post">
                 <dl>
                     <dt>メールアドレス</dt>
                     <dd>
-                        <input type="text" name="email" size="35" maxlength="255" value="<?php echo htmlspecialchars($email); ?>" />
+                        <input type="text" name="email" size="35" maxlength="255" value="" />
                         <?php if ($error['login'] === 'blank') : ?>
                             <p class="error"> kara</p>
                         <?php elseif ($error['login'] === 'faild') : ?>
@@ -45,7 +45,7 @@
                     </dd>
                     <dt>パスワード</dt>
                     <dd>
-                        <input type="password" name="password" size="35" maxlength="255" value="<?php echo htmlspecialchars($_POST['password']); ?>" />
+                        <input type="password" name="password" size="35" maxlength="255" value="" />
                     </dd>
                     <dt>ログイン情報の記録</dt>
                     <dd>
