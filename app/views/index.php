@@ -1,3 +1,25 @@
 <?php
-echo  __DIR__;
-phpinfo();
+require '../helpers/first_actions.php';
+var_dump($_SESSION);
+$session_controller->check_sign_in();
+?>
+
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>会員登録</title>
+
+	<link rel="stylesheet" href="../style.css" />
+</head>
+
+<body>
+	<?php require 'header.php' ?>
+	<?php var_dump($current_user) ?>
+</body>
+
+</html>
