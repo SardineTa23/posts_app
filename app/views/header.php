@@ -5,6 +5,7 @@
   }
   ?>
   <?php if ($current_user) : ?>
-    <div style="text-align: right"><a href="index.php?action=<?php print(htmlspecialchars('sign_out')) ?>" name="">ログアウト</a></div>
+    <div style="display:inline-block"><a href="articles/new.php">記事を作成</a></div>
+    <div style="display:inline-block;"><a href="index.php?action=<?php print(htmlspecialchars('sign_out')) ?>" name="">ログアウト</a></div>
   <?php endif ?>
 </header>

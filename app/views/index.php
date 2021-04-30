@@ -1,6 +1,5 @@
 <?php
 require '../helpers/first_actions.php';
-var_dump($_SESSION);
 $session_controller->check_sign_in();
 ?>
 
