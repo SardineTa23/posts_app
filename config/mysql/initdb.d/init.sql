@@ -10,7 +10,7 @@ CREATE TABLE users (
 CREATE TABLE articles (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     user_id INT NOT NULL,
-    thumbnail_id INT NOT NULL,
+    thumbnail_id INT NOT NULL DEFAULT 0,
     title VARCHAR(255) NOT NULL,
     body TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -50,3 +50,19 @@ values(
         NULL,
         NULL
     );
+INSERT INTO tags(name)
+VALUES ('スポーツ');
+INSERT INTO tags(name)
+VALUES ('政治');
+INSERT INTO tags(name)
+VALUES ('経済');
+INSERT INTO tags(name)
+VALUES ('美容');
+INSERT INTO tags(name)
+VALUES ('テクノロジー');
+INSERT INTO tags(name)
+VALUES ('エンタメ');
+INSERT INTO tags(name)
+VALUES ('グルメ');
+INSERT INTO tags(name)
+VALUES ('ビジネス');

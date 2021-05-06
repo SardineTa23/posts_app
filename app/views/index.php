@@ -19,6 +19,7 @@ $session_controller->check_sign_in();
 <body>
 	<?php require 'header.php' ?>
 	<?php var_dump($current_user) ?>
+	<a href="/articles/new.php">記事を作成する</a>
 </body>
 
 </html>
