@@ -1,6 +1,6 @@
 <?php
-require '../helpers/first_actions.php';
-require '../helpers/error.php';
+require '/var/www/app/helpers/first_actions.php';
+require '/var/www/app/helpers/error.php';
 if (!empty($_POST)) {
   $session_controller->do_sign_up($db, $error);
 };
