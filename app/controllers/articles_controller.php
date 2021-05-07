@@ -6,23 +6,7 @@ class ArticlesController
         $this->db = $db;
     }
 
-    function validate($article, $selected_tags, $selected_images)
-    {
-        if ($article->title === "") {
-            $error['title'] = 'blank';
-        }
-        if ($article->body === "") {
-            $error['body'] = 'blank';
-        }
-        if (empty($selected_tags)) {
-            $error['tags'] = 'empty';
-        }
-        if (empty($selected_images)) {
-            $error['images'] = 'empty';
-        }
 
-        return $error;
-    }
 
     function new($session_controller)
     {
@@ -34,16 +18,20 @@ class ArticlesController
 
     function create($article, $selected_tags, $selected_images)
     {
-        $statement = $this->db->prepare('INSERT INTO articles SET title=?, body=?, user_id=?');
-        $statement->execute(array(
-            $article->title,
-            $article->body,
-            $article->user_id
-        ));
-        $data = $statement->fetch();
-        var_dump($data);
-        // header('Location: ../index.php');
-        // exit();
+        // articleのデータ作成
+        $article_id = $article->create();
+
+        // article_tag_relationshipのデータ作成
+        $article_tag_relationship = new ArticleTagRelationship($this->db);
+        $article_tag_relationship->create($selected_tags, $article_id);
+
+        $image = new Image($this->db);
+        $image_id = $image->create($selected_images, $article_id);
+
+        // サムネイル画像のセット
+        $article->set_thumbnail($article_id, $image_id);
+        header('Location: ../index.php');
+        exit();
     }
 
     function show()
