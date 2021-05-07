@@ -1,6 +1,5 @@
 <?php
 require '../helpers/first_actions.php';
-var_dump($_SESSION);
 $session_controller->check_sign_in();
 ?>
 
@@ -20,6 +19,7 @@ $session_controller->check_sign_in();
 <body>
 	<?php require 'header.php' ?>
 	<?php var_dump($current_user) ?>
+	<a href="/articles/new.php">記事を作成する</a>
 </body>
 
 </html>

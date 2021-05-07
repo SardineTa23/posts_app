@@ -1,5 +1,4 @@
 <?php
-
 class Sessions_controller
 {
   // コンストラクタで、接続したPDOインスタンスと現在のセッション情報を受け取る
