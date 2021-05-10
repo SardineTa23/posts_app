@@ -1,0 +1,9 @@
+* {
+    list-style: none;
+    text-decoration: none;
+}
+
+.pagenation {
+    text-decoration: none;
+    color: black;
+}
