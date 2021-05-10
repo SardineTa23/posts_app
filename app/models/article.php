@@ -65,4 +65,13 @@ class Article extends Model
         $article_stm = $this->db->prepare("UPDATE articles SET thumbnail_id = ? WHERE id = ?");
         $article_stm->execute(array($image_id, $article_id));
     }
+
+    public function search_thumbnail()
+    {
+        $stm = $this->db->prepare('SELECT * FROM images WHERE id = ?');
+        $stm->execute(array($this->thumbnail_id));
+
+        // 見つかったサムネイルのレコードを返す。
+        return $stm->fetch();
+    }
 }
