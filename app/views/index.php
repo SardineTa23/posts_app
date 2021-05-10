@@ -17,7 +17,7 @@ $articles = $articles_controller->index($page);
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>posts_app</title>
-    <link rel="stylesheet" href="../assets/styles/style.css">
+	<link rel="stylesheet" href="../assets/styles/style.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 </head>
 
@@ -31,12 +31,14 @@ $articles = $articles_controller->index($page);
 				$thumbnail = $article->search_thumbnail();
 				$thumbnail_url = $article->id . "/" . $thumbnail['url'];
 				?>
-				<div class="card row col-md-3" style="display: inline-block;">
-					<img src="../images/article_images/<?php print(htmlspecialchars($thumbnail_url)) ?>" alt="">
-					<div class="card-body">
-						<p class="card-text"><?php print(htmlspecialchars($article->title, ENT_QUOTES)) ?></p>
+				<a href="">
+					<div class="card row col-md-3" style="display: inline-block;">
+						<img src="../images/article_images/<?php print(htmlspecialchars($thumbnail_url)) ?>" alt="">
+						<div class="card-body">
+							<p class="card-text"><?php print(htmlspecialchars($article->title, ENT_QUOTES)) ?></p>
+						</div>
 					</div>
-				</div>
+				</a>
 			<?php endforeach ?>
 		</div>
 	</div>
