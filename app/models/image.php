@@ -1,9 +1,10 @@
 <?php
-class Image
+require_once 'model.php';
+class Image extends Model
 {
-	function __construct($db)
+	function __construct()
 	{
-		$this->db = $db;
+		parent::__construct();
 	}
 
 	function create($selected_images, $article_id)

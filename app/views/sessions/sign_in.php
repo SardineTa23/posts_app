@@ -1,5 +1,5 @@
 <?php
-require '../helpers/first_actions.php';
+require '/var/www/app/helpers/first_actions.php';
 
 //formが送信されたあと＝ボタンが押された時の処理
 if (!empty($_POST) && $_POST['button'] === 'test_login') {

@@ -1,12 +1,7 @@
 <?php
 require_once '/var/www/app/helpers/first_actions.php';
-require_once '/var/www/app/models/article.php';
-require_once '/var/www/app/controllers/articles_controller.php';
-require_once '/var/www/app/models/tag.php';
-require_once '/var/www/app/models/image.php';
-require_once '/var/www/app/models/article_tag_relationship.php';
-
-$article_controller = new ArticlesController($db);
+$article = new Article();
+$article_controller = new ArticlesController($article->db);
 $tags = $article_controller->new($session_controller);
 
 if (!empty($_POST)) {
@@ -23,7 +18,8 @@ if (!empty($_POST)) {
     }, ARRAY_FILTER_USE_BOTH);
 
     // 記事作成アクションの取り出し。
-    $article = new Article($current_user, $db);
+    $article = new Article();
+    $article->set_new_article($current_user);
     $error = $article->validate($selected_tags, $selected_images);
 
     // エラーがないもないときに、createアクションを走らせる
@@ -47,7 +43,7 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-    <?php require_once '../header.php';  ?>
+    <?php require_once '/var/www/app/views/layouts/header.php';  ?>
     <form action="" method="post" enctype="multipart/form-data">
         <div>
             <?php if ($error['title']) : ?>

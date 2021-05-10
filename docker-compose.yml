@@ -9,6 +9,7 @@ services:
       - "8080:80"
     volumes:
       - ./app:/var/www/app
+      - ./vendor:/var/www/vendor
     depends_on:
       - mysql
 

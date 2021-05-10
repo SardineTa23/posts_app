@@ -1,16 +1,30 @@
 <?php
-class Article
+require_once 'model.php';
+
+class Article extends Model
 {
-    function __construct($current_user, $db)
+    public ?string $id;
+    public ?string $name;
+    public ?string $user_id;
+    public ?string $thumbnail_id;
+    public ?string $body;
+    public ?string $title;
+    public PDO $db;
+
+
+    function __construct($obj = [])
     {
-        $this->title = $_POST['title'];
-        $this->body = $_POST['body'];
-        $this->user_id = $current_user['id'];
-        $this->db = $db;
+        parent::__construct();
+        foreach ($obj as $key => $value) {
+            if (property_exists($this, $key) && !is_null($value)) {
+                $this->$key = $value;
+            }
+        }
     }
 
     function validate($selected_tags, $selected_images)
     {
+
         if ($this->title === "") {
             $error['title'] = 'blank';
         }
@@ -25,6 +39,13 @@ class Article
         }
 
         return $error;
+    }
+
+    function set_new_article($current_user)
+    {
+        $this->title = $_POST['title'];
+        $this->body = $_POST['body'];
+        $this->user_id = $current_user['id'];
     }
 
     function create()
@@ -43,5 +64,14 @@ class Article
     {
         $article_stm = $this->db->prepare("UPDATE articles SET thumbnail_id = ? WHERE id = ?");
         $article_stm->execute(array($image_id, $article_id));
+    }
+
+    public function search_thumbnail()
+    {
+        $stm = $this->db->prepare('SELECT * FROM images WHERE id = ?');
+        $stm->execute(array($this->thumbnail_id));
+
+        // 見つかったサムネイルのレコードを返す。
+        return $stm->fetch();
     }
 }
