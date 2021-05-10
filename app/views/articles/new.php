@@ -1,7 +1,7 @@
 <?php
 require_once '/var/www/app/helpers/first_actions.php';
-
-$article_controller = new ArticlesController($db);
+$article = new Article();
+$article_controller = new ArticlesController($article->db);
 $tags = $article_controller->new($session_controller);
 
 if (!empty($_POST)) {
@@ -18,7 +18,8 @@ if (!empty($_POST)) {
     }, ARRAY_FILTER_USE_BOTH);
 
     // 記事作成アクションの取り出し。
-    $article = new Article($current_user, $db);
+    $article = new Article();
+    $article->set_new_article($current_user);
     $error = $article->validate($selected_tags, $selected_images);
 
     // エラーがないもないときに、createアクションを走らせる

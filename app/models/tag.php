@@ -1,9 +1,10 @@
 <?php
-class Tag
+require_once 'model.php';
+class Tag extends Model
 {
-    function __construct($db)
+    function __construct()
     {
-        $this->db = $db;
+        parent::__construct();
     }
 
     function getAll()

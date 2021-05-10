@@ -11,7 +11,7 @@ class ArticlesController
     public function new($session_controller)
     {
         $session_controller->check_sign_in();
-        $tag =  new Tag($this->db);
+        $tag =  new Tag();
         $tags = $tag->getAll();
         return $tags;
     }
@@ -22,10 +22,10 @@ class ArticlesController
         $article_id = $article->create();
 
         // article_tag_relationshipのデータ作成
-        $article_tag_relationship = new ArticleTagRelationship($this->db);
+        $article_tag_relationship = new ArticleTagRelationship();
         $article_tag_relationship->create($selected_tags, $article_id);
 
-        $image = new Image($this->db);
+        $image = new Image();
         $image_id = $image->create($selected_images, $article_id);
 
         // サムネイル画像のセット
