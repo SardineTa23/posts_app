@@ -10,7 +10,7 @@ class Image extends Model
 	function create($selected_images, $article_id)
 	{
 		$statement = $this->db->prepare('INSERT INTO images SET article_id=?, url=?');
-		$path = "/var/www/app/images/article_images/";
+		$path = "/var/www/app/views/images/article_images/";
 
 		// 今回の記事の画像を保存するディレクトリ作成
 		mkdir($path . $article_id, 0777);
@@ -20,7 +20,7 @@ class Image extends Model
 			$image = date('YmdHis') . $image['name'];
 			// ファイルをサーバーに保存
 			if (is_uploaded_file($_FILES["$file_place"]['tmp_name'])) {
-				move_uploaded_file($_FILES["$file_place"]['tmp_name'], "/var/www/app/images/article_images/$article_id/" . $image);
+				move_uploaded_file($_FILES["$file_place"]['tmp_name'], "/var/www/app/views/images/article_images/$article_id/" . $image);
 				$statement->execute(array(
 					$article_id,
 					$image

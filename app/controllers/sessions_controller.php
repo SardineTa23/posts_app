@@ -31,7 +31,7 @@ class Sessions_controller
         if (isset($this->session['id']) && $this->session['time'] + 3600 > time()) {
             $_SESSION['time'] = time();
         } else {
-            header('Location: sessions/sign_in.php');
+            header('Location: '. $_SERVER['HTTP_HOST'] . 'sessions/sign_in.php');
             exit();
         }
     }
@@ -41,7 +41,7 @@ class Sessions_controller
     {
         // ログインしていないときは返り値がfalseになる、そうでない＝ログインしているときは、index.phpへ遷移
         if ($this->search_user() !== false) {
-            header('Location: ../index.php');
+            header('Location: /');
             exit();
         }
     }

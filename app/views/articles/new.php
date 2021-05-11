@@ -1,8 +1,9 @@
 <?php
 require_once '/var/www/app/helpers/first_actions.php';
+$session_controller->check_sign_in();
 $article = new Article();
 $article_controller = new ArticlesController($article->db);
-$tags = $article_controller->new($session_controller);
+$tags = $article_controller->new();
 
 if (!empty($_POST)) {
     // var_dump($_FILES);
@@ -45,6 +46,7 @@ if (!empty($_POST)) {
 <body>
     <?php require_once '/var/www/app/views/layouts/header.php';  ?>
     <form action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name='function' value='create'>
         <div>
             <?php if ($error['title']) : ?>
                 <p style='color: red;'><?php print(htmlspecialchars('タイトルがありません')) ?></p>

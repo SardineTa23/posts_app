@@ -1,8 +1,8 @@
 <?php
 require '../helpers/first_actions.php';
 $session_controller->check_sign_in();
-$articles_controller = new ArticlesController($db);
-$current_page = $articles_controller->pagenate();
+$articles_controller = new ArticlesController();
+$current_page = $articles_controller->pagenate($db);
 $maxPage = $current_page->maxPage;
 $page = $current_page->page;
 $articles = $articles_controller->index($page);
@@ -23,7 +23,7 @@ $articles = $articles_controller->index($page);
 
 <body>
 	<?php require '/var/www/app/views/layouts/header.php' ?>
-	<a href="/articles/new.php">記事を作成する</a>
+	<a href="articles/new.php">記事を作成する</a>
 	<div class="container container-m">
 		<div class="">
 			<?php foreach ($articles as $article) : ?>
@@ -31,9 +31,9 @@ $articles = $articles_controller->index($page);
 				$thumbnail = $article->search_thumbnail();
 				$thumbnail_url = $article->id . "/" . $thumbnail['url'];
 				?>
-				<a href="">
+				<a href="articles/<?php print(htmlspecialchars($article->id))?>">
 					<div class="card row col-md-3" style="display: inline-block;">
-						<img src="../images/article_images/<?php print(htmlspecialchars($thumbnail_url)) ?>" alt="">
+						<img src="images/article_images/<?php print(htmlspecialchars($thumbnail_url)) ?>" alt="">
 						<div class="card-body">
 							<p class="card-text"><?php print(htmlspecialchars($article->title, ENT_QUOTES)) ?></p>
 						</div>

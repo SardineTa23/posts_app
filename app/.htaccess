@@ -1,8 +1,0 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-    RewriteRule ^index.php$ /views/index.php [L]
-    RewriteRule ^sign_in.php$ /views/sessions/sign_in.php [L]
-    RewriteRule ^sign_up.php$ /views/sessions/sign_up.php [L]
-    RewriteRule ^articles/new.php$ /views/articles/new.php [L]
-</IfModule>
