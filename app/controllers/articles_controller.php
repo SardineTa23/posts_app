@@ -1,16 +1,18 @@
 <?php
+require_once '/var/www/app/helpers/article_helper.php';
+
 class ArticlesController
 {
-    function __construct($db)
+
+    function __construct()
     {
-        $this->db = $db;
+        $this->helper = new ArticleHelper();
     }
 
 
 
-    public function new($session_controller)
+    public function new()
     {
-        $session_controller->check_sign_in();
         $tag =  new Tag();
         $tags = $tag->getAll();
         return $tags;
@@ -19,54 +21,65 @@ class ArticlesController
     public function create($article, $selected_tags, $selected_images)
     {
         // articleのデータ作成
-        $article_id = $article->create();
-
-        // article_tag_relationshipのデータ作成
-        $article_tag_relationship = new ArticleTagRelationship();
-        $article_tag_relationship->create($selected_tags, $article_id);
-
-        $image = new Image();
-        $image_id = $image->create($selected_images, $article_id);
-
+        $article->create($selected_tags, $selected_images);
         // サムネイル画像のセット
-        $article->set_thumbnail($article_id, $image_id);
+        $article->set_thumbnail($article->id, $article->thumbnail_id);
         header('Location: ../index.php');
         exit();
     }
 
     public function index($page)
     {
-        $start = ($page - 1) * 5;
-        $articles = $this->db->prepare('SELECT * FROM  articles ORDER BY articles.created_at DESC LIMIT ?, 10');
-        $articles->bindParam(1, $start, PDO::PARAM_INT);
-        $articles->execute();
-        return $articles->fetchAll(PDO::FETCH_ASSOC);
+        $model = new Article();
+        $articles = $model->index_articles($page);
+        return $articles;
     }
 
     public function show()
     {
+        $model = new Article();
+        $article = $model->search_article();
+        return $article;
     }
 
-    public function edit()
+    public function edit($current_user)
     {
+        $model = new Article();
+        $article = $model->search_article();
+        if ($this->helper->check_article_user($article, $current_user)) {
+            return $article;
+        }
     }
 
-    public function update()
+    public function update($article, $current_user)
     {
+        if ($this->helper->check_article_user($article, $current_user)) {
+            $article->update();
+            header('Location: /articles/' . $article->id);
+            exit();
+        }
     }
 
-    public function destroy()
+    public function destroy($current_user)
     {
+        $model = new Article();
+        $article = $model->search_article();
+        if ($this->helper->check_article_user($article, $current_user)) {
+            $article->destroy();
+            $_SESSION['message'] = '削除に成功しました';
+            header('Location: /');
+            exit();
+        }
     }
 
-    public function pagenate()
+    public function pagenate($db)
     {
         $page = $_REQUEST['page'];
         if ($page == '') {
             $page = 1;
         };
         $page = max($page, 1);
-        $counts = $this->db->query('SELECT COUNT(*) AS cnt FROM articles');
+        $counts = $db->query('SELECT COUNT(*) AS cnt FROM articles');
         $cnt = $counts->fetch();
         $maxPage = ceil($cnt['cnt'] / 10);
         $page = min($page, $maxPage);

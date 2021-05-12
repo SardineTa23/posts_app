@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^sign_in.php$ /sessions/sign_in.php [L]
+    RewriteRule ^sign_up.php$ /sessions/sign_up.php [L]
+    RewriteRule ^articles/\d{1,}$ /articles/show.php [L]
+    RewriteRule ^articles/\d{1,}/edit$ /articles/edit.php [L]
+    RewriteRule ^articles/\d{1,}/destroy$ /articles/destroy.php [L]
+</IfModule>
