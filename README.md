@@ -21,8 +21,12 @@ config
 ##動作確認
 
 ```
-   docker compose build --no-cache
+   $ docker compose build --no-cache
+   $ docker-compose up -d
 ```
+
+http://localhost:8080/
+へ接続。
 
 
 
