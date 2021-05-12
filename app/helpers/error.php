@@ -22,9 +22,10 @@ if (!empty($_POST)) {
 
     // 重複チェック
     if (empty($error)) {
-        $member = $db->prepare('SELECT COUNT(*) AS cnt FROM users WHERE email=? ');
-        $member->execute(array($_POST["email"]));
-        $record = $member->fetch();
+        $user = new User();
+        $stm = $user->db->prepare('SELECT COUNT(*) AS cnt FROM users WHERE email=? ');
+        $stm->execute(array($_POST["email"]));
+        $record = $stm->fetch();
         if ($record["cnt"] > 0) {
             $error['email'] = 'duplicate';
         }
