@@ -8,11 +8,15 @@ class ArticleTagRelationship extends Model
     }
     function create($selected_tags, $article_id)
     {
-        $statement = $this->db->prepare('INSERT INTO article_tag_relationships SET article_id= :article_id, tag_id= :tag_id');
-        foreach ($selected_tags as $tag_id) {
-            $statement->bindParam(':article_id', $article_id);
-            $statement->bindParam(':tag_id', $tag_id);
-            $statement->execute();
+        try {
+            foreach ($selected_tags as $tag_id) {
+                $statement = $this->db->prepare('INSERT INTO article_tag_relationships SET article_id= ?, tag_id= ?');
+                $statement->bindValue(1, $article_id);
+                $statement->bindValue(2, $tag_id);
+                $statement->execute();
+            }
+        } catch (PDOException $e) {
+            print('Error:' . $e->getMessage());
         }
     }
 }

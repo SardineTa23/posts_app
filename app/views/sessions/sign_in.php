@@ -3,8 +3,16 @@ require '/var/www/app/helpers/first_actions.php';
 
 //formが送信されたあと＝ボタンが押された時の処理
 if (!empty($_POST) && $_POST['button'] === 'test_login') {
+    if (!CsrfValidator::validate(filter_input(INPUT_POST, 'token'))) {
+        header('Content-Type: text/plain; charset=UTF-8', true, 400);
+        die('CSRF validation failed.');
+    }
     $session_controller->click_sign_in_button('a@a.com', sha1('000000'));
 } elseif (!empty($_POST)) {
+    if (!CsrfValidator::validate(filter_input(INPUT_POST, 'token'))) {
+        header('Content-Type: text/plain; charset=UTF-8', true, 400);
+        die('CSRF validation failed.');
+    }
     $session_controller->click_sign_in_button($_POST['email'], sha1($_POST['password']));
 }
 ?>
@@ -30,17 +38,18 @@ if (!empty($_POST) && $_POST['button'] === 'test_login') {
                 <p>&raquo;<a href="sign_up.php">入会手続きをする</a></p>
             </div>
             <div>
-                <form method='post'><button name='button' value='test_login'>testlogin</button></form>
+                <form method='post'><input type="hidden" name="token" value="<?= CsrfValidator::generate() ?>"><button name='button' value='test_login'>テストユーザーログイン</button></form>
             </div>
             <form action="" method="post">
+                <input type="hidden" name="token" value="<?= CsrfValidator::generate() ?>">
                 <dl>
                     <dt>メールアドレス</dt>
                     <dd>
                         <input type="text" name="email" size="35" maxlength="255" value="" />
-                        <?php if ($error['login'] === 'blank') : ?>
-                            <p class="error"> kara</p>
-                        <?php elseif ($error['login'] === 'faild') : ?>
-                            <p class="error"> sippai</p>
+                        <?php if ($_SESSION['login'] === 'blank') : ?>
+                            <p class="error">空です</p>
+                        <?php elseif ($_SESSION['login'] === 'faild') : ?>
+                            <p class="error">不明なユーザー</p>
                         <?php endif ?>
                     </dd>
                     <dt>パスワード</dt>

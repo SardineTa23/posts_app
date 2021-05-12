@@ -6,7 +6,7 @@
   ?>
   <div style="display:inline-block"><a href="/">ホーム</a></div>
   <?php if ($current_user) : ?>
-    <div style="display:inline-block;"><a href="/?action=<?php print(htmlspecialchars('sign_out')) ?>" name="">ログアウト</a></div>
+    <div style="display:inline-block;"><a href="/?action=sign_out" name="">ログアウト</a></div>
   <?php else : ?>
     <div style="display:inline-block;"><a href="/sign_in.php" name="">ログイン</a></div>
   <?php endif ?>

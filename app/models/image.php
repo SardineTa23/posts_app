@@ -9,13 +9,14 @@ class Image extends Model
 
 	function create($selected_images, $article_id)
 	{
-		$statement = $this->db->prepare('INSERT INTO images SET article_id=?, url=?');
+		
 		$path = "/var/www/app/views/images/article_images/";
 
 		// 今回の記事の画像を保存するディレクトリ作成
 		mkdir($path . $article_id, 0777);
 
 		foreach ($selected_images as $file_place => $image) {
+			$statement = $this->db->prepare('INSERT INTO images SET article_id=?, url=?');
 			// 保存するファイル名に、日付を追加して重複を防ぐ
 			$image = date('YmdHis') . $image['name'];
 			// ファイルをサーバーに保存

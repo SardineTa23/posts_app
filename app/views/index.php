@@ -1,10 +1,11 @@
 <?php
 require '../helpers/first_actions.php';
+$session_controller->check_sign_in();
 $articles_controller = new ArticlesController();
-$current_page = $articles_controller->pagenate($db);
-$maxPage = $current_page->maxPage;
-$page = $current_page->page;
-$articles = $articles_controller->index($page);
+// $maxPage = $current_page->maxPage;
+// $page = $current_page->page;
+$articles = $articles_controller->index();
+
 ?>
 
 
@@ -30,9 +31,9 @@ $articles = $articles_controller->index($page);
 				$thumbnail = $article->search_thumbnail();
 				$thumbnail_url = $article->id . "/" . $thumbnail['url'];
 				?>
-				<a href="articles/<?php print(htmlspecialchars($article->id))?>">
+				<a href="articles/<?php print(htmlspecialchars($article->id, ENT_QUOTES))?>">
 					<div class="card row col-md-3" style="display: inline-block;">
-						<img src="images/article_images/<?php print(htmlspecialchars($thumbnail_url)) ?>" alt="">
+						<img src="images/article_images/<?php print(htmlspecialchars($thumbnail_url, ENT_QUOTES)) ?>" alt="">
 						<div class="card-body">
 							<p class="card-text"><?php print(htmlspecialchars($article->title, ENT_QUOTES)) ?></p>
 						</div>

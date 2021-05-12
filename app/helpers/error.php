@@ -12,19 +12,13 @@ if (!empty($_POST)) {
     if ($_POST['password'] === '') {
         $error['password'] = 'blank';
     }
-    // $fileName = $_FILES['image']['name'];
-    // if (!empty($fileName)) {
-    //     $ext = substr($fileName, -3);
-    //     if ($ext != 'jpg' && $ext != 'gif' && $ext != 'png' && $ext != 'JPG') {
-    //         $error['image'] = 'type';
-    //     }
-    // }
 
     // 重複チェック
     if (empty($error)) {
-        $member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE email=? ');
-        $member->execute(array($_POST["email"]));
-        $record = $member->fetch();
+        $user = new User();
+        $stm = $user->db->prepare('SELECT COUNT(*) AS cnt FROM users WHERE email=? ');
+        $stm->execute(array($_POST["email"]));
+        $record = $stm->fetch();
         if ($record["cnt"] > 0) {
             $error['email'] = 'duplicate';
         }
