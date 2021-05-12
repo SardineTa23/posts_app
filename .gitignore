@@ -3,3 +3,4 @@ vendor/
 app/views/images/
 .idea/
 html/
+.DS_Store
