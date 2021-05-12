@@ -16,7 +16,7 @@ class Sessions_controller
             $_SESSION['time'] = time();
             return true;
         } else {
-            header('Location: /sessions/sign_in.php');
+            header('Location: sign_in.php');
             exit();
         }
     }
@@ -41,6 +41,7 @@ class Sessions_controller
             if ($user) {
                 $_SESSION['id'] = $user['id'];
                 $_SESSION['time'] = time();
+                $_SESSION['error'] = '';
 
                 // cookieのチェックが入っている時
                 if ($_POST['save'] === 'on') {
@@ -50,11 +51,11 @@ class Sessions_controller
                 exit();
                 // 該当するユーザーがない時
             } else {
-                $error["login"] = 'faild';
+                $_SESSION["login"] = 'faild';
             }
             // フォームが空のとき
         } else {
-            $error['login'] = 'blank';
+            $_SESSION['login'] = 'blank';
         }
     }
 

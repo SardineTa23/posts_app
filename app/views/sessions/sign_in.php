@@ -46,10 +46,10 @@ if (!empty($_POST) && $_POST['button'] === 'test_login') {
                     <dt>メールアドレス</dt>
                     <dd>
                         <input type="text" name="email" size="35" maxlength="255" value="" />
-                        <?php if ($error['login'] === 'blank') : ?>
-                            <p class="error"> kara</p>
-                        <?php elseif ($error['login'] === 'faild') : ?>
-                            <p class="error"> sippai</p>
+                        <?php if ($_SESSION['login'] === 'blank') : ?>
+                            <p class="error">空です</p>
+                        <?php elseif ($_SESSION['login'] === 'faild') : ?>
+                            <p class="error">不明なユーザー</p>
                         <?php endif ?>
                     </dd>
                     <dt>パスワード</dt>

@@ -1,5 +1,6 @@
 <?php
 require '../helpers/first_actions.php';
+$session_controller->check_sign_in();
 $articles_controller = new ArticlesController();
 // $maxPage = $current_page->maxPage;
 // $page = $current_page->page;

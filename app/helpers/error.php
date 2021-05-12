@@ -12,13 +12,6 @@ if (!empty($_POST)) {
     if ($_POST['password'] === '') {
         $error['password'] = 'blank';
     }
-    // $fileName = $_FILES['image']['name'];
-    // if (!empty($fileName)) {
-    //     $ext = substr($fileName, -3);
-    //     if ($ext != 'jpg' && $ext != 'gif' && $ext != 'png' && $ext != 'JPG') {
-    //         $error['image'] = 'type';
-    //     }
-    // }
 
     // 重複チェック
     if (empty($error)) {

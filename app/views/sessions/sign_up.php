@@ -6,6 +6,7 @@ if (!empty($_POST)) {
         header('Content-Type: text/plain; charset=UTF-8', true, 400);
         die('CSRF validation failed.');
     }
+
     $session_controller->do_sign_up($error);
 };
 ?>
@@ -60,6 +61,7 @@ if (!empty($_POST)) {
                 </dl>
                 <div><input type="submit" value="入力内容を確認する" /></div>
             </form>
+            <p>&raquo;<a href="sign_in.php">ログインページへ</a></p>
         </div>
 </body>
 
