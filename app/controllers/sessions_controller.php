@@ -30,8 +30,9 @@ class Sessions_controller
         // 現在のセッションをDBで検索かける、elseならサインインページへ
         if (isset($this->session['id']) && $this->session['time'] + 3600 > time()) {
             $_SESSION['time'] = time();
+            return true;
         } else {
-            header('Location: '. $_SERVER['HTTP_HOST'] . 'sessions/sign_in.php');
+            header('Location: /sessions/sign_in.php');
             exit();
         }
     }

@@ -47,16 +47,25 @@ class Article extends Model
         $this->user_id = $current_user['id'];
     }
 
-    function create()
+    function create($selected_tags, $selected_images)
     {
-        $statement = $this->db->prepare('INSERT INTO articles SET title=?, body=?, user_id=?');
-        $statement->execute(array(
-            $this->title,
-            $this->body,
-            $this->user_id
-        ));
-        $this->id = $this->db->lastInsertId();
-        return $this->id;
+        $article_tag_relationship = new ArticleTagRelationship();
+        $image = new Image();
+        try {
+            
+            $article_stm = $this->db->prepare('INSERT INTO articles SET title= :title, body= :body, user_id= :user_id');
+            $article_stm->bindParam(':title', $this->title);
+            $article_stm->bindParam(':body',  $this->body);
+            $article_stm->bindParam(':user_id', $this->user_id);
+            $article_stm->execute();
+            $this->id = $this->db->lastInsertId();
+            $article_tag_relationship->create($selected_tags, $this->id);
+            $this->thumbnail_id = $image->create($selected_images, $this->id);
+
+            return $this->id;
+        } catch (PDOException $e) {
+            print('Error:'.$e->getMessage());
+        }
     }
 
     public function set_thumbnail($article_id, $image_id)
@@ -91,10 +100,10 @@ class Article extends Model
 
     public function index_articles($page)
     {
-        $start = ($page - 1) * 5;
-        $articles = $this->db->prepare('SELECT * FROM  articles ORDER BY articles.created_at DESC LIMIT ?, 10');
-        $articles->bindParam(1, $start, PDO::PARAM_INT);
-        $articles->execute();
+        $start = ($page - 1) * 10;
+        $articles = $this->db->prepare('SELECT * FROM  articles ORDER BY articles.created_at DESC LIMIT 0, 10');
+        // $articles->bindParam(1, $start, PDO::PARAM_INT);
+        $articles->execute(array($start));
         return  $articles->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -125,7 +134,8 @@ class Article extends Model
         return $tags;
     }
 
-    public function update() {
+    public function update()
+    {
         try {
             $stm = $this->db->prepare("UPDATE articles SET title = :title, body = :body WHERE id = :id");
             $stm->bindParam(':title', $_POST['title']);
@@ -138,40 +148,24 @@ class Article extends Model
         }
     }
 
-    public function destroy() {
+    public function destroy()
+    {
         $sqls['article'] = 'DELETE FROM articles WHERE id = :id';
         $sqls['relationships'] = 'DELETE FROM article_tag_relationships WHERE article_id = :id';
         $sqls['images'] = 'DELETE FROM images WHERE article_id = :id';
         $path = "/var/www/app/views/images/article_images/" . $this->id;
-        try{
+        try {
             $this->db->beginTransaction();
-            foreach($sqls as $sql) {
+            foreach ($sqls as $sql) {
                 $stm = $this->db->prepare($sql);
                 $stm->bindParam(':id', $this->id, PDO::PARAM_INT);
                 $stm->execute();
             }
             $this->db->commit();
-            function remove_directory($dir) {
-                $files = array_diff(scandir($dir), array('.','..'));
-                foreach ($files as $file) {
-                    // ファイルかディレクトリによって処理を分ける
-                    if (is_dir("$dir/$file")) {
-                        // ディレクトリなら再度同じ関数を呼び出す
-                        remove_directory("$dir/$file");
-                    } else {
-                        // ファイルなら削除
-                        unlink("$dir/$file");
-                    }
-                }
-                // 指定したディレクトリを削除
-                return rmdir($dir);
-            }
-            remove_directory($path);
-        }catch(Exception $e){
-            $this->db->rollBack(); 
-            var_dump($e);
+            $this->remove_directory($path);
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            exit($e->getMessage());
         }
     }
 }
-
-

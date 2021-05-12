@@ -1,6 +1,5 @@
 <?php
 require '../helpers/first_actions.php';
-$session_controller->check_sign_in();
 $articles_controller = new ArticlesController();
 $current_page = $articles_controller->pagenate($db);
 $maxPage = $current_page->maxPage;

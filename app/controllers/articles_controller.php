@@ -3,7 +3,7 @@ require_once '/var/www/app/helpers/article_helper.php';
 
 class ArticlesController
 {
-    
+
     function __construct()
     {
         $this->helper = new ArticleHelper();
@@ -21,17 +21,9 @@ class ArticlesController
     public function create($article, $selected_tags, $selected_images)
     {
         // articleのデータ作成
-        $article_id = $article->create();
-
-        // article_tag_relationshipのデータ作成
-        $article_tag_relationship = new ArticleTagRelationship();
-        $article_tag_relationship->create($selected_tags, $article_id);
-
-        $image = new Image();
-        $image_id = $image->create($selected_images, $article_id);
-
+        $article->create($selected_tags, $selected_images);
         // サムネイル画像のセット
-        $article->set_thumbnail($article_id, $image_id);
+        $article->set_thumbnail($article->id, $article->thumbnail_id);
         header('Location: ../index.php');
         exit();
     }
