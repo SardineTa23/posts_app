@@ -28,7 +28,7 @@ class ArticlesController
         exit();
     }
 
-    public function index($page)
+    public function index()
     {
         $model = new Article();
         $articles = $model->index();

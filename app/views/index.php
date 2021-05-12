@@ -1,9 +1,9 @@
 <?php
 require '../helpers/first_actions.php';
 $articles_controller = new ArticlesController();
-$maxPage = $current_page->maxPage;
-$page = $current_page->page;
-$articles = $articles_controller->index($page);
+// $maxPage = $current_page->maxPage;
+// $page = $current_page->page;
+$articles = $articles_controller->index();
 
 ?>
 
