@@ -5,12 +5,12 @@ session_start();
 require_once "/var/www/app/dbconnect.php";
 // Session状態を管理するコントローラーふぁいる
 require_once "/var/www/app/controllers/sessions_controller.php";
-require_once '/var/www/app/models/article.php';
 require_once '/var/www/app/controllers/articles_controller.php';
+require_once '/var/www/app/helpers/csrf_validator.php';
+require_once '/var/www/app/models/article.php';
 require_once '/var/www/app/models/tag.php';
 require_once '/var/www/app/models/image.php';
 require_once '/var/www/app/models/user.php';
-require_once '/var/www/app/helpers/csrf_validator.php';
 require_once '/var/www/app/models/article_tag_relationship.php';
 
 

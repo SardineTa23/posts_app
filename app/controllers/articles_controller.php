@@ -31,7 +31,7 @@ class ArticlesController
     public function index($page)
     {
         $model = new Article();
-        $articles = $model->index_articles($page);
+        $articles = $model->index();
         return $articles;
     }
 

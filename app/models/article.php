@@ -52,7 +52,6 @@ class Article extends Model
         $article_tag_relationship = new ArticleTagRelationship();
         $image = new Image();
         try {
-
             $article_stm = $this->db->prepare('INSERT INTO articles SET title= :title, body= :body, user_id= :user_id');
             $article_stm->bindParam(':title', $this->title);
             $article_stm->bindParam(':body',  $this->body);
@@ -61,7 +60,6 @@ class Article extends Model
             $this->id = $this->db->lastInsertId();
             $article_tag_relationship->create($selected_tags, $this->id);
             $this->thumbnail_id = $image->create($selected_images, $this->id);
-
             return $this->id;
         } catch (PDOException $e) {
             print('Error:' . $e->getMessage());
@@ -117,13 +115,14 @@ class Article extends Model
         }
     }
 
-    public function index_articles($page)
+    public function index()
     {
         try {
-            $start = ($page - 1) * 10;
-            $articles = $this->db->prepare('SELECT * FROM  articles ORDER BY articles.created_at DESC LIMIT 0, 10');
-            // $articles->bindParam(1, $start, PDO::PARAM_INT);
-            $articles->execute(array($start));
+            // $start = ($page - 1) * 10;
+            // $articles = $this->db->prepare('SELECT * FROM  articles ORDER BY articles.created_at DESC LIMIT 0, 10');
+            // // $articles->bindParam(1, $start, PDO::PARAM_INT);
+            // $articles->execute(array($start));
+            $articles = $this->db->query('SELECT * FROM articles');
             return  $articles->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             var_dump($e);

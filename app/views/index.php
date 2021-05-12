@@ -1,11 +1,10 @@
 <?php
 require '../helpers/first_actions.php';
 $articles_controller = new ArticlesController();
-$current_page = $articles_controller->pagenate($db);
 $maxPage = $current_page->maxPage;
 $page = $current_page->page;
 $articles = $articles_controller->index($page);
-var_dump($current_user);
+
 ?>
 
 
