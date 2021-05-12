@@ -1,3 +1,4 @@
 data/
 vendor/
 app/views/images/
+.idea/
