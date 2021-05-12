@@ -82,6 +82,7 @@ class Sessions_controller
     }
 
 
+    // 会員登録が行われるメソッド
     public function do_sign_up($error)
     {
         if (!empty($_POST)) {

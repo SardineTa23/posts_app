@@ -10,7 +10,6 @@ class ArticlesController
     }
 
 
-
     public function new()
     {
         $tag =  new Tag();
@@ -46,6 +45,8 @@ class ArticlesController
     {
         $model = new Article();
         $article = $model->find();
+
+        // ログイン中のユーザーと記事のユーザーの一致を確認
         if ($this->helper->check_article_user($article, $current_user)) {
             return $article;
         }
@@ -53,6 +54,7 @@ class ArticlesController
 
     public function update($article, $current_user)
     {
+        // ログイン中のユーザーと記事のユーザーの一致を確認
         if ($this->helper->check_article_user($article, $current_user)) {
             $article->update();
             header('Location: /articles/' . $article->id);
@@ -64,6 +66,8 @@ class ArticlesController
     {
         $model = new Article();
         $article = $model->find();
+
+        // ログイン中のユーザーと記事のユーザーの一致を確認
         if ($this->helper->check_article_user($article, $current_user)) {
             $article->destroy();
             $_SESSION['message'] = '削除に成功しました';
@@ -71,7 +75,9 @@ class ArticlesController
             exit();
         }
     }
+    
 
+    // ページネーションのメソッド、現在は使ってません
     public function pagenate($db)
     {
         $page = $_REQUEST['page'];

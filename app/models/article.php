@@ -118,10 +118,13 @@ class Article extends Model
     public function index()
     {
         try {
+            // 以下ページネーションを使っていたときのコード、現在は使ってないです。
             // $start = ($page - 1) * 10;
             // $articles = $this->db->prepare('SELECT * FROM  articles ORDER BY articles.created_at DESC LIMIT 0, 10');
             // // $articles->bindParam(1, $start, PDO::PARAM_INT);
             // $articles->execute(array($start));
+
+
             $articles = $this->db->query('SELECT * FROM articles');
             return  $articles->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
