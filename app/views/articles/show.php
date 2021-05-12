@@ -30,18 +30,18 @@ $tags = $article->tags();
             <div class="title">本文：<?php print(htmlspecialchars($article->body, ENT_QUOTES)) ?></div>
             <div class="images">
                 <?php foreach($article->images() as $image) :?>
-                    <img class='card-image' src="../images/article_images/<?php print(htmlspecialchars($article->id))?>/<?php print(htmlspecialchars($image['url'])) ?>" alt="">
+                    <img class='card-image' src="../images/article_images/<?php print(htmlspecialchars($article->id))?>/<?php print(htmlspecialchars($image['url'], ENT_QUOTES)) ?>" alt="">
                 <?php endforeach ?>
             </div>
             <div class="tags">
                 <div><p>この記事のタグ</p></div>
                 <?php foreach($article->tags() as $tag) :?>
-                    <div class="card-tag"><p>・<?php print(htmlspecialchars($tag['name'])) ?></p></div>
+                    <div class="card-tag"><p>・<?php print(htmlspecialchars($tag['name'], ENT_QUOTES)) ?></p></div>
                 <?php endforeach ?>
             </div>
             <?php if ($article->user_id === $current_user['id']) :?>
-                <a href="<?php print(htmlspecialchars($article->id)) ?>/edit">編集する</a>
-                <a href="<?php print(htmlspecialchars($article->id)) ?>/destroy">削除する</a>
+                <a href="<?php print(htmlspecialchars($article->id, ENT_QUOTES)) ?>/edit">編集する</a>
+                <a href="<?php print(htmlspecialchars($article->id, ENT_QUOTES)) ?>/destroy">削除する</a>
             <?php endif ?>
         </div>
     </div>

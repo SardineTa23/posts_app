@@ -2,11 +2,14 @@
 require_once '/var/www/app/helpers/first_actions.php';
 $session_controller->check_sign_in();
 $article = new Article();
-$article_controller = new ArticlesController($article->db);
+$article_controller = new ArticlesController();
 $tags = $article_controller->new();
 
 if (!empty($_POST)) {
-    // var_dump($_FILES);
+    if (!CsrfValidator::validate(filter_input(INPUT_POST, 'token'))) {
+        header('Content-Type: text/plain; charset=UTF-8', true, 400);
+        die('CSRF validation failed.');
+    }
     // 複数のタグが選択されたときのために、選択されたタグ情報だけを別の配列として取り出す。
     $selected_tags = array_filter($_POST, function ($key) {
         return strpos($key, 'tag') !== false;
@@ -47,25 +50,26 @@ if (!empty($_POST)) {
     <?php require_once '/var/www/app/views/layouts/header.php';  ?>
     <form action="" method="post" enctype="multipart/form-data">
         <input type="hidden" name='function' value='create'>
+        <input type="hidden" name="token" value="<?=CsrfValidator::generate()?>">
         <div>
             <?php if ($error['title']) : ?>
-                <p style='color: red;'><?php print(htmlspecialchars('タイトルがありません')) ?></p>
+                <p style='color: red;'><?php print(htmlspecialchars('タイトルがありません', ENT_QUOTES)) ?></p>
             <?php endif ?>
             <label for="">タイトル</label><br>
-            <input type="text" name="title" size='50' value="<?php print(htmlspecialchars($_POST['title'])) ?>" />
+            <input type="text" name="title" size='50' value="<?php print(htmlspecialchars($_POST['title'], ENT_QUOTES)) ?>" />
         </div><br>
 
         <div>
             <?php if ($error['body']) : ?>
-                <p style='color: red;'><?php print(htmlspecialchars('本文がありません')) ?></p>
+                <p style='color: red;'><?php print(htmlspecialchars('本文がありません', ENT_QUOTES)) ?></p>
             <?php endif ?>
             <label for="">本文</label><br>
-            <input type="text" name="body" size='50' value="<?php print(htmlspecialchars($_POST['body'])) ?>" />
+            <input type="text" name="body" size='50' value="<?php print(htmlspecialchars($_POST['body'], ENT_QUOTES)) ?>" />
         </div><br>
 
         <div>
             <?php if ($error['images']) : ?>
-                <p style='color: red;'><?php print(htmlspecialchars('写真が選択されていません')) ?></p>
+                <p style='color: red;'><?php print(htmlspecialchars('写真が選択されていません', ENT_QUOTES)) ?></p>
             <?php endif ?>
             <label for="">写真(一枚目はサムネイルとして扱われます)</label><br>
             <input type="file" name="image1" size="35" value="test" 　accept="image/*" required />
@@ -77,11 +81,11 @@ if (!empty($_POST)) {
         <label for="">該当するタグを選択</label>
         <div>
             <?php if ($error['tags']) : ?>
-                <p style='color: red;'><?php print(htmlspecialchars('タグが選択されていません')) ?></p>
+                <p style='color: red;'><?php print(htmlspecialchars('タグが選択されていません', ENT_QUOTES)) ?></p>
             <?php endif ?>
             <?php foreach ($tags as $i => $tag) : ?>
-                <label for=""><?php print(htmlspecialchars($tag['name'])) ?></label>
-                <input type="checkbox" name='tag<?php print(htmlspecialchars($i)) ?>' value="<?php print(htmlspecialchars($tag['id'])); ?>">
+                <label for=""><?php print(htmlspecialchars($tag['name'], ENT_QUOTES)) ?></label>
+                <input type="checkbox" name='tag<?php print(htmlspecialchars($i, ENT_QUOTES)) ?>' value="<?php print(htmlspecialchars($tag['id'], ENT_QUOTES)); ?>">
             <?php endforeach ?>
         </div>
 

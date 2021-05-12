@@ -7,6 +7,10 @@ $title = $article->title;
 $body = $article->body;
 
 if (!empty($_POST)) {
+    if (!CsrfValidator::validate(filter_input(INPUT_POST, 'token'))) {
+        header('Content-Type: text/plain; charset=UTF-8', true, 400);
+        die('CSRF validation failed.');
+    }
     $error = $article->validate();
     $title = $_POST['title'];
     $body = $_POST['body'];
@@ -34,21 +38,22 @@ if (!empty($_POST)) {
 <body>
     <?php require_once '/var/www/app/views/layouts/header.php';  ?>
     <form action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="token" value="<?= CsrfValidator::generate() ?>">
         <input type="hidden" name='function' value='update'>
         <div>
             <?php if ($error['title']) : ?>
-                <p style='color: red;'><?php print(htmlspecialchars('タイトルがありません')) ?></p>
+                <p style='color: red;'><?php print(htmlspecialchars('タイトルがありません', ENT_QUOTES)) ?></p>
             <?php endif ?>
             <label for="">タイトル</label><br>
-            <input type="text" name="title" size='50' value="<?php print(htmlspecialchars($title)) ?>" />
+            <input type="text" name="title" size='50' value="<?php print(htmlspecialchars($title, ENT_QUOTES)) ?>" />
         </div><br>
 
         <div>
             <?php if ($error['body']) : ?>
-                <p style='color: red;'><?php print(htmlspecialchars('本文がありません')) ?></p>
+                <p style='color: red;'><?php print(htmlspecialchars('本文がありません', ENT_QUOTES)) ?></p>
             <?php endif ?>
             <label for="">本文</label><br>
-            <input type="text" name="body" size='50' value="<?php print(htmlspecialchars($body)) ?>" />
+            <input type="text" name="body" size='50' value="<?php print(htmlspecialchars($body, ENT_QUOTES)) ?>" />
         </div><br>
 
         <input type="submit" value="Update" />

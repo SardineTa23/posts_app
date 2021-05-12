@@ -38,14 +38,14 @@ class ArticlesController
     public function show()
     {
         $model = new Article();
-        $article = $model->search_article();
+        $article = $model->find();
         return $article;
     }
 
     public function edit($current_user)
     {
         $model = new Article();
-        $article = $model->search_article();
+        $article = $model->find();
         if ($this->helper->check_article_user($article, $current_user)) {
             return $article;
         }
@@ -63,7 +63,7 @@ class ArticlesController
     public function destroy($current_user)
     {
         $model = new Article();
-        $article = $model->search_article();
+        $article = $model->find();
         if ($this->helper->check_article_user($article, $current_user)) {
             $article->destroy();
             $_SESSION['message'] = '削除に成功しました';

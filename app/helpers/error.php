@@ -22,7 +22,7 @@ if (!empty($_POST)) {
 
     // 重複チェック
     if (empty($error)) {
-        $member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE email=? ');
+        $member = $db->prepare('SELECT COUNT(*) AS cnt FROM users WHERE email=? ');
         $member->execute(array($_POST["email"]));
         $record = $member->fetch();
         if ($record["cnt"] > 0) {
