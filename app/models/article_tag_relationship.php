@@ -6,17 +6,13 @@ class ArticleTagRelationship extends Model
     {
         parent::__construct();
     }
-    function create($selected_tags, $article_id)
+    function create($article, $selected_tags)
     {
-        try {
-            foreach ($selected_tags as $tag_id) {
-                $statement = $this->db->prepare('INSERT INTO article_tag_relationships SET article_id= ?, tag_id= ?');
-                $statement->bindValue(1, $article_id);
-                $statement->bindValue(2, $tag_id);
-                $statement->execute();
-            }
-        } catch (PDOException $e) {
-            print('Error:' . $e->getMessage());
+        foreach ($selected_tags as $tag_id) {
+            $statement = $article->db->prepare('INSERT INTO article_tag_relationships SET article_id= ?, tag_id= ?');
+            $statement->bindValue(1, $article->id);
+            $statement->bindValue(2, $tag_id);
+            $statement->execute();
         }
     }
 }

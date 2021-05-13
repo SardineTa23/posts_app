@@ -20,7 +20,7 @@ class Article extends Model
         }
     }
 
-    function validate($action ,$selected_tags = [], $selected_images = [])
+    function validate($action, $selected_tags = [], $selected_images = [])
     {
 
         if ($this->title === "") {
@@ -47,16 +47,21 @@ class Article extends Model
         $article_tag_relationship = new ArticleTagRelationship();
         $image = new Image();
         try {
+            $this->db->beginTransaction();
             $article_stm = $this->db->prepare('INSERT INTO articles SET title= :title, body= :body, user_id= :user_id');
             $article_stm->bindParam(':title', $this->title);
             $article_stm->bindParam(':body',  $this->body);
             $article_stm->bindParam(':user_id', $this->user_id);
             $article_stm->execute();
             $this->id = $this->db->lastInsertId();
-            $article_tag_relationship->create($selected_tags, $this->id);
-            $this->thumbnail_id = $image->create($selected_images, $this->id);
+
+            $article_tag_relationship->create($this, $selected_tags);
+            $image->create($this, $selected_images);
+            
+            $this->db->commit();
             return $this->id;
         } catch (PDOException $e) {
+            $this->db->rollBack();
             print('Error:' . $e->getMessage());
         }
     }

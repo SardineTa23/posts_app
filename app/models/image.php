@@ -7,18 +7,17 @@ class Image extends Model
 		parent::__construct();
 	}
 
-	function create($selected_images, $article_id)
+	function create($article, $selected_images)
 	{
 
 		$path = "/var/www/app/views/images/article_images/";
 
 		// 今回の記事の画像を保存するディレクトリ作成
-		mkdir($path . $article_id, 0777);
-
+		mkdir($path . $article->id, 0777);
 
 
 		foreach ($selected_images as $file_place => $image) {
-			$statement = $this->db->prepare('INSERT INTO images SET article_id=?, url=?');
+			$statement = $article->db->prepare('INSERT INTO images SET article_id=?, url=?');
 			try {
 
 				// 未定義である・複数ファイルである・$_FILES Corruption 攻撃を受けた
@@ -57,15 +56,15 @@ class Image extends Model
 				if (is_uploaded_file($_FILES["$file_place"]['tmp_name'])) {
 					$extension = image_type_to_extension(exif_imagetype($_FILES["$file_place"]['tmp_name']));
 					$file_name = date('YmdHis') . '-' . sha1_file($_FILES["$file_place"]['tmp_name']) . $extension;
-					move_uploaded_file($_FILES["$file_place"]['tmp_name'], "/var/www/app/views/images/article_images/$article_id/" . $file_name);
+					move_uploaded_file($_FILES["$file_place"]['tmp_name'], "/var/www/app/views/images/article_images/$article->id/" . $file_name);
 					$statement->execute(array(
-						$article_id,
+						$article->id,
 						$file_name
 					));
 
-					// 配列の最初の要素のIDだけ取得する。
+					// 配列の最初の要素のIDだけ取得して、サムネイル画像をセット。
 					if ($file_place === "image1") {
-						$first_image_id = $this->db->lastInsertId();
+						$article->thumbnail_id = $article->db->lastInsertId();
 					}
 				}
 			} catch (RuntimeException $e) {
@@ -73,6 +72,5 @@ class Image extends Model
 				exit();
 			}
 		}
-		return $first_image_id;
 	}
 }
