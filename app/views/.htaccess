@@ -6,4 +6,7 @@
     RewriteRule ^articles/\d{1,}$ /articles/show.php [L]
     RewriteRule ^articles/\d{1,}/edit$ /articles/edit.php [L]
     RewriteRule ^articles/\d{1,}/destroy$ /articles/destroy.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ / [R=301,L]   
 </IfModule>

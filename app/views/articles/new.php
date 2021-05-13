@@ -22,9 +22,8 @@ if (!empty($_POST)) {
     }, ARRAY_FILTER_USE_BOTH);
 
     // 記事作成アクションの取り出し。
-    $article = new Article();
-    $article->set_new_article($current_user);
-    $error = $article->validate($selected_tags, $selected_images);
+    $article = $article_controller->set_new_article($current_user);
+    $error = $article->validate($_POST['function'] ,$selected_tags, $selected_images);
 
     // エラーがないもないときに、createアクションを走らせる
     if (!$error) {

@@ -1,5 +1,5 @@
 <?php
-require_once '/var/www/app/helpers/article_helper.php';
+require_once dirname(__DIR__) . '/helpers/article_helper.php';
 
 class ArticlesController
 {
@@ -56,6 +56,8 @@ class ArticlesController
     {
         // ログイン中のユーザーと記事のユーザーの一致を確認
         if ($this->helper->check_article_user($article, $current_user)) {
+            $article->title =  $_POST['title'];
+            $article->body = $_POST['body'];
             $article->update();
             header('Location: /articles/' . $article->id);
             exit();
@@ -74,6 +76,15 @@ class ArticlesController
             header('Location: /');
             exit();
         }
+    }
+
+    function set_new_article($current_user)
+    {
+        $article = new Article();
+        $article->title = $_POST['title'];
+        $article->body = $_POST['body'];
+        $article->user_id = $current_user['id'];
+        return $article;
     }
     
 
