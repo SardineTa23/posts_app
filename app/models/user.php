@@ -42,12 +42,17 @@ class User extends Model
     public function find_by(string $email, string $password)
     {
         try {
-            $stm = $this->db->prepare('SELECT * FROM users WHERE email= :email AND password= :password');
+            $stm = $this->db->prepare('SELECT * FROM users WHERE email= :email');
             $stm->bindParam(':email', $email);
-            $stm->bindParam(':password', $password);
             $stm->execute();
             $result = $stm->fetch();
-            return $result;
+            if(password_verify($password, $result['password'])){
+                $_SESSION['message'] = 'ログイン認証に成功しました';
+                return $result;
+            }else{
+                var_dump($password);
+                $_SESSION['message'] = 'ログイン認証に失敗しました';
+            } 
         } catch (PDOException $e) {
             var_dump($e);
             exit();

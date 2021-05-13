@@ -7,13 +7,13 @@ if (!empty($_POST) && $_POST['button'] === 'test_login') {
         header('Content-Type: text/plain; charset=UTF-8', true, 400);
         die('CSRF validation failed.');
     }
-    $session_controller->click_sign_in_button('a@a.com', sha1('000000'));
+    $session_controller->click_sign_in_button('a@a.com', '000000');
 } elseif (!empty($_POST)) {
     if (!CsrfValidator::validate(filter_input(INPUT_POST, 'token'))) {
         header('Content-Type: text/plain; charset=UTF-8', true, 400);
         die('CSRF validation failed.');
     }
-    $session_controller->click_sign_in_button($_POST['email'], sha1($_POST['password']));
+    $session_controller->click_sign_in_button($_POST['email'], $_POST['password']);
 }
 ?>
 

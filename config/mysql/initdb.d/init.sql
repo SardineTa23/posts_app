@@ -44,7 +44,7 @@ INSERT INTO users
 values(
         NULL,
         'a@a.com',
-        'c984aed014aec7623a54f0591da07a85fd4b762d',
+        '$2y$10$s..pacQLzbbUGegZsccCh.jPQdb7RjclDZJ7qGx50mmFOcNpI.Ojq',
         "test",
         "",
         NULL,

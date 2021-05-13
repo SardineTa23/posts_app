@@ -20,16 +20,16 @@ class Article extends Model
         }
     }
 
-    function validate($selected_tags = [], $selected_images = [])
+    function validate($action ,$selected_tags = [], $selected_images = [])
     {
 
-        if ($_POST['title'] === "") {
+        if ($this->title === "") {
             $error['title'] = 'blank';
         }
-        if ($_POST['body'] === "") {
+        if ($this->body === "") {
             $error['body'] = 'blank';
         }
-        if ($_POST['function'] === 'create') {
+        if ($action === 'create') {
             if (empty($selected_tags)) {
                 $error['tags'] = 'empty';
             }
@@ -40,12 +40,7 @@ class Article extends Model
         return $error;
     }
 
-    function set_new_article($current_user)
-    {
-        $this->title = $_POST['title'];
-        $this->body = $_POST['body'];
-        $this->user_id = $current_user['id'];
-    }
+
 
     function create($selected_tags, $selected_images)
     {
@@ -174,8 +169,8 @@ class Article extends Model
     {
         try {
             $stm = $this->db->prepare("UPDATE articles SET title = :title, body = :body WHERE id = :id");
-            $stm->bindParam(':title', $_POST['title']);
-            $stm->bindParam(':body', $_POST['body']);
+            $stm->bindParam(':title', $this->title);
+            $stm->bindParam(':body', $this->body);
             $stm->bindParam(':id', $this->id, PDO::PARAM_INT);
             $stm->execute();
         } catch (PDOException $e) {

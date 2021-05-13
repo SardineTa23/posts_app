@@ -11,7 +11,9 @@ if (!empty($_POST)) {
         header('Content-Type: text/plain; charset=UTF-8', true, 400);
         die('CSRF validation failed.');
     }
-    $error = $article->validate();
+    $article->title = $_POST['title'];
+    $article->body = $_POST['body'];
+    $error = $article->validate($_POST['function']);
     $title = $_POST['title'];
     $body = $_POST['body'];
 

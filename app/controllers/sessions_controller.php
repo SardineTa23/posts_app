@@ -88,13 +88,13 @@ class Sessions_controller
     {
         if (!empty($_POST)) {
             $email = $_POST['email'];
-            $password = sha1($_POST['password']);
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $name = $_POST['name'];
             if (empty($error)) {
                 $model = new User();
                 $model->create($name, $email, $password);
                 $_SESSION['message'] = '会員登録が完了しました';
-                $this->click_sign_in_button($email, $password);
+                $this->click_sign_in_button($email, $_POST['password']);
             }
         }
     }
